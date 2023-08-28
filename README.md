@@ -8,11 +8,11 @@
 
 Para la clase Cadeteria:
 
-* CrearPedido(Cliente, Cadete): Devuelve un Pedido a partir de un Cliente y un Cadete
+* CrearPedido(): Devuelve un Pedido con los datos de un Cliente
 
 * Pagar(Cadete): Deposita el monto adecuado al Cadete que haya entregado su pedido
 
-* ReasignarCadete(Pedido): Reasigna un Pedido actual a un nuevo Cadete
+* AsignarPedido(): Asigna un pedido a un nuevo Cadete
 
 * GenerarInforme(): Genera un informe de la actividad de la Cadeteria
 
@@ -22,7 +22,7 @@ Para la clase cadete:
 
 * RecibirPedido(Pedido): Agrega un nuevo Pedido a la lista de pedidos del cadete
 
-* CancelarPedido(Pedido): Elimina el Pedido de la lista de pedidos del Cadete
+* EstaLleno(): Devuelve si el Cadete puede acumular mas pedidos
 
 ## Pregunta 3
 
@@ -32,7 +32,7 @@ Para la clase cadete:
 
 * Para la clase Cadete: Su ID, Direccion, y ListadoDePedidos deberian ser atributos privados, mientras que su Nombre y Telefono atributos publicos. Los metodos de la clase deberian ser privados excepto JornalACobrar para la clase Cadeteria
 
-* Para la clase Cadeteria: Todos sus atributos y metodos deberian ser privados
+* Para la clase Cadeteria: Todos sus atributos deberian ser privados. Los metodos para crear y asignar pedidos deberian ser publicos
 
 ## Pregunta 4
 
@@ -46,4 +46,4 @@ Para la clase cadete:
 
 ## Pregunta 5
 
-No se me ocurre otra manera para el diseño de clases
+Se podría relacionar no solo la clase Cliente con la clase Pedido, sino tambien con la Cadeteria, asi el metodo CrearPedido se realiza a partir de un Cliente y un Cadete. Ademas agregaria atributos al Cadete para determinar la capacidad maxima de pedidos que este puede llevar, y una lista de pedidos pendientes a la Cadeteria para poder asignarselos a distintos cadetes
