@@ -10,15 +10,13 @@ Para la clase Cadeteria:
 
 * CrearPedido(): Devuelve un Pedido con los datos de un Cliente
 
-* Pagar(Cadete): Deposita el monto adecuado al Cadete que haya entregado su pedido
-
 * AsignarPedido(): Asigna un pedido a un nuevo Cadete
+
+* CambiarEstado(Pedido, Estado): Cambia el estado de un Pedido
 
 * GenerarInforme(): Genera un informe de la actividad de la Cadeteria
 
 Para la clase cadete:
-
-* CambiarEstado(Pedido): Cambia el estado del Pedido actual
 
 * RecibirPedido(Pedido): Agrega un nuevo Pedido a la lista de pedidos del cadete
 
