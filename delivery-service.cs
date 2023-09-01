@@ -38,9 +38,12 @@ namespace Entities {
 
         public void ChangeStatus(uint orderId) {
             Order targetOrder = totalOrders.Single(order => order.OrderNumber == orderId);
+            Delivery targetDelivery = deliveriesList.Single(delivery => delivery.OrdersList.Any(order => order.OrderNumber == orderId));
             if(targetOrder.OrderStatus == Status.Completed) {
                 Console.WriteLine("\nPedido ya completado\n");
+                return;
             }
+            targetDelivery.ChangeStatus(orderId);
             targetOrder.OrderStatus = Status.Completed;
         }
 

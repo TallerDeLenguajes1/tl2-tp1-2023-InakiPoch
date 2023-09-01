@@ -23,13 +23,15 @@ namespace Entities {
             }
         } 
 
-        public int TotalPayment() {
-            var completedOrders = from order in ordersList where order.OrderStatus == Status.Completed select order;
-            return 500 * completedOrders.Count();
+        public void ChangeStatus(uint orderId) {
+            Order targetOrder = ordersList.Single(order => order.OrderNumber == orderId);
+            targetOrder.OrderStatus = Status.Completed;
         }
 
         public void DeleteOrder(Order order) => ordersList.Remove(order);
         public bool IsFull() => ordersList.Count == MAX_ORDERS;
+        public int TotalPayment() => 500 * ordersList.Count(order => order.OrderStatus == Status.Completed);
         public string Id { get => id; }
+        public List<Order> OrdersList { get => ordersList; }
     }
 }

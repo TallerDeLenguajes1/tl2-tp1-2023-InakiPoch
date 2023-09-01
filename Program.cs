@@ -6,14 +6,20 @@ internal class Program {
         List<Delivery> workers = new List<Delivery>();
         using(var reader = new StreamReader("delivery-data.csv")) {
             while(!reader.EndOfStream) {
-                var splits = reader.ReadLine().Split(';');
-                workers.Add(new Delivery(splits[0], splits[1], splits[2], splits[3]));
+                string? line = reader.ReadLine();
+                if(line != null) {
+                    var splits = line.Split(';');
+                    workers.Add(new Delivery(splits[0], splits[1], splits[2], splits[3]));
+                }
             }
         }
         using(var reader = new StreamReader("delivery-service-data.csv")) {
-            var splits = reader.ReadLine().Split(';');
-            service = new DeliveryService(splits[0], splits[1], workers);
-            Interface(service);
+            string? line = reader.ReadLine();
+            if(line != null) {
+                var splits = line.Split(';');
+                service = new DeliveryService(splits[0], splits[1], workers);
+                Interface(service);
+            }
         }
     }
 
@@ -22,7 +28,7 @@ internal class Program {
         uint orderNumber = 1;
         do {
             Console.WriteLine("------MENU------\n");
-            Console.WriteLine("\nPedidos pendientes: " + service.PendingOrders.Count);
+            Console.WriteLine("Pedidos pendientes: " + service.PendingOrders.Count);
             Console.WriteLine("Pedidos totales: " + service.TotalOrders.Count);
             Console.WriteLine("\n1-Crear Pedido\n2-Asignar a cadete\n3-Cambiar estado de pedido\n4-Reasignar pedido\n5-Salir\n");
             var key = Console.ReadLine();
