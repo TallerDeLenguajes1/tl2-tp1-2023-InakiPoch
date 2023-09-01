@@ -65,7 +65,7 @@ internal class Program {
                         input = Console.ReadLine();
                     }
                     Console.WriteLine("\nPedido creado con exito\n");
-                    service.CreateOrder(orderNumber, observation, Status.Pending, clientName, clientAdress, clientCellphone);
+                    service.CreateOrder(orderNumber, observation, clientName, clientAdress, clientCellphone);
                     orderNumber++;
                     break;
                 case 2:
@@ -91,19 +91,13 @@ internal class Program {
                         Console.WriteLine("\nIngresar un numero valido: ");
                         idInput = Console.ReadLine();
                     }
-                    Console.WriteLine("Ingresar la ID del cadete con dicho pedido: ");
-                    var previousDeliveryId = Console.ReadLine();
-                    while(previousDeliveryId == null) {
-                        Console.WriteLine("\nIngresar una direccion valida: ");
-                        previousDeliveryId = Console.ReadLine();
-                    }
                     Console.WriteLine("Ingresar la ID del cadete a reasignar el pedido: ");
                     var deliveryId = Console.ReadLine();
                     while(deliveryId == null) {
                         Console.WriteLine("\nIngresar una direccion valida: ");
                         deliveryId = Console.ReadLine();
                     }
-                    service.ReasignOrder(id, deliveryId, previousDeliveryId);
+                    service.ReasignOrder(id, deliveryId);
                     break;
                 case 5: break;
                 default:
