@@ -20,5 +20,8 @@ namespace Entities {
         public bool IsFull() => ordersNumber == MAX_ORDERS;
         public void IncreaseCurrentOrders() => ordersNumber++;
         public string Id { get => id; }
+        public string Name { get => name; }
+        public string Address { get => address; }
+        public string CellphoneNumber { get => cellphoneNumber; }
     }
 }

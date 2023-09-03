@@ -15,7 +15,6 @@ namespace Entities {
             totalOrders = new List<Order>();
         }
 
-
         public void CreateOrder(uint orderNumber, string observation, string clientName, string clientAdress, uint clientNumber) {
             var newOrder = new Order(orderNumber, observation, clientName, clientAdress, clientNumber);
             pendingOrders.Add(newOrder);
@@ -90,7 +89,10 @@ namespace Entities {
 
         private bool canHaveOrders(Delivery delivery) => !delivery.IsFull() && pendingOrders.Any();
 
-        public List<Order> PendingOrders { get => pendingOrders;}
-        public List<Order> TotalOrders { get => totalOrders;}
+        public List<Order> PendingOrders { get => pendingOrders; }
+        public List<Order> TotalOrders { get => totalOrders; }
+        public List<Delivery> DeliveriesList { get => deliveriesList; }
+        public string Name { get => name; }
+        public string CellphoneNumber { get => cellphoneNumber; }
     }
 }

@@ -1,31 +1,48 @@
 ﻿using Entities;
+using Data;
 
 internal class Program {
     private static void Main(string[] args) {
-        DeliveryService service;
-        List<Delivery> workers = new List<Delivery>();
-        using(var reader = new StreamReader("delivery-data.csv")) {
-            while(!reader.EndOfStream) {
-                string? line = reader.ReadLine();
-                if(line != null) {
-                    var splits = line.Split(';');
-                    workers.Add(new Delivery(splits[0], splits[1], splits[2], splits[3]));
-                }
-            }
-        }
-        using(var reader = new StreamReader("delivery-service-data.csv")) {
-            string? line = reader.ReadLine();
-            if(line != null) {
-                var splits = line.Split(';');
-                service = new DeliveryService(splits[0], splits[1], workers);
-                Interface(service);
-            }
-        }
+        List<DeliveryService>? servicesList = new List<DeliveryService>();
+        List<Delivery>? workers = new List<Delivery>();
+        Interface(servicesList, workers);
     }
 
-    private static void Interface(DeliveryService service) {
+    private static void Interface(List<DeliveryService>? servicesList, List<Delivery>? workers) {
         int option;
         uint orderNumber = 1;
+        int fileOption;
+        DataAdress data;
+        Console.WriteLine("-----SERVICIO DE CADETERIA-----");
+        Console.WriteLine("Elegir el tipo de acceso\n1-Archivo JSON\n2-Archivo CSV\n");
+        var fileInput = Console.ReadLine();
+        while(!int.TryParse(fileInput, out fileOption)) {
+            Console.WriteLine("\nIngresar una opcion valida\n");
+            fileInput = Console.ReadLine();
+        }
+        switch(fileOption) {
+            case 1:
+                data = new JSONData();
+                data.CreateJSONFile("delivery-service-data.csv");
+                data.CreateJSONFile("delivery-data.csv");
+                workers = data.GetDeliveries();
+                servicesList = data.GetService();
+                break;
+            case 2:
+                data = new CSVData();
+                workers = data.GetDeliveries();
+                servicesList = data.GetService();
+                break;
+            default:
+                Console.WriteLine("\nOpcion no encontrada\n");
+                Environment.Exit(1);
+                break;
+        }
+        if(servicesList == null) {
+            Console.WriteLine("\nSe produjo un error al leer los datos de la cadeteria\n");
+            return;
+        }
+        DeliveryService? service = servicesList[0];
         do {
             Console.WriteLine("------MENU------\n");
             Console.WriteLine("Pedidos pendientes: " + service.PendingOrders.Count);
