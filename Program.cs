@@ -122,6 +122,15 @@ internal class Program {
                     break;
             }
         } while(option != 5);
-        service.GenerateReport();
+        var report = service.GenerateReport();
+        Console.WriteLine("\n------INFORME------\n");
+        Console.WriteLine("Ordenes sin entregar: " + report.GetPendingOrdersCount());
+        Console.WriteLine("Ordenes entregadas: " + report.GetCompletedOrdersCount());
+        Console.WriteLine("Ordenes totales: " + report.GetTotalOrdersCount());
+        Console.WriteLine("\n-------MONTOS A PAGAR-------");
+        foreach(Delivery delivery in service.DeliveriesList) {
+                Console.WriteLine($"Cadete {delivery.Id}: {service.DeliveryPayment(delivery.Id)}");
+        }
+        Console.WriteLine("----------------\nTOTAL A PAGAR: " + report.TotalPayment);
     }
 }

@@ -1,3 +1,5 @@
+using ReportManager;
+
 namespace Entities {
     public class DeliveryService {
         const int ORDER_PRICE = 500;
@@ -21,11 +23,9 @@ namespace Entities {
             totalOrders.Add(newOrder);
         }
         
-        public void AssignOrder() {
-            if(!deliveriesRemain()) {
-                Console.WriteLine("\nNo quedan cadetes disponibles\n");
-                return;
-            }
+        public bool AssignOrder() {
+            if(!deliveriesRemain())
+                return false;
             while(true) {
                 int randomDelivery = new Random().Next(deliveriesList.Count);
                 Delivery targetDelivery = deliveriesList[randomDelivery];
@@ -33,51 +33,42 @@ namespace Entities {
                     pendingOrders[0].Delivery = targetDelivery;
                     targetDelivery.IncreaseCurrentOrders();
                     pendingOrders.Remove(pendingOrders[0]);
-                    return;
                 }
             }
         }
 
-        public void ChangeStatus(uint orderId) {
+        public bool ChangeStatus(uint orderId) {
             Order targetOrder = totalOrders.Single(order => order.OrderNumber == orderId);
             if(targetOrder.OrderStatus == Status.Completed) {
-                Console.WriteLine("\nPedido ya completado\n");
-                return;
-
+                return false;
             }
             targetOrder.OrderStatus = Status.Completed;
+            return true;
         }
 
-        public void ReasignOrder(uint orderId, string deliveryId) {
+        public bool? ReasignOrder(uint orderId, string deliveryId) {
             Order targetOrder = totalOrders.Single(order => order.OrderNumber == orderId);
             Delivery targetDelivery = deliveriesList.Single(delivery => delivery.Id == deliveryId);
             if(!targetDelivery.IsFull()) {
                 targetOrder.Delivery = targetDelivery;
-                Console.WriteLine("\nPedido reasignado con exito!\n");
-                return;
+                return true;
             }
-            Console.WriteLine("\nNo se pudo reasignar el pedido\n");
+            return false;
         }
 
-        private int deliveryPayment(string deliveryID) {
+        public int DeliveryPayment(string deliveryID) {
             var ordersList = from order in totalOrders where order.Delivery?.Id == deliveryID select order;
             var ordersCompleted = from order in ordersList where order.OrderStatus == Status.Completed select order;
             return ORDER_PRICE * ordersCompleted.Count();
         }
 
-        public void GenerateReport() {
+        public Report GenerateReport() {
             var completedOrders = from order in totalOrders where order.OrderStatus == Status.Completed select order;
             int totalPayment = 0;
-            Console.WriteLine("\n------INFORME------\n");
-            Console.WriteLine("Pedidos pendientes: " + pendingOrders.Count);
-            Console.WriteLine("Pedidos entregados: " + completedOrders.Count()); 
-            Console.WriteLine("Pedidos totales: " + totalOrders.Count);
-            Console.WriteLine("\n-------MONTOS A PAGAR-------");
             foreach(Delivery delivery in deliveriesList) {
-                Console.WriteLine($"Cadete {delivery.Id}: {deliveryPayment(delivery.Id)}");
-                totalPayment += deliveryPayment(delivery.Id);
+                totalPayment += DeliveryPayment(delivery.Id);
             }
-            Console.WriteLine("\n------------------\nTOTAL A PAGAR: " + totalPayment);
+            return new Report(completedOrders, deliveriesList, pendingOrders, totalOrders, totalPayment);
         }
 
         private bool deliveriesRemain() {
